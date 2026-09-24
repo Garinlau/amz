@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+workbench/config.toml
+workbench/base.json
+output/
+.pytest_cache/

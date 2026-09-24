@@ -1,0 +1,46 @@
+# 复制成 config.toml 再改。密钥一律放环境变量，这里只写环境变量的名字。
+
+[feishu]
+base_url = "https://open.feishu.cn"
+app_id_env = "FEISHU_APP_ID"
+app_secret_env = "FEISHU_APP_SECRET"
+# 建表程序跑完会打印出来，填到这里
+app_token = ""
+
+[worker]
+poll_seconds = 30
+# 出图结果先存一份在本地，方便排查
+save_dir = "output"
+# 图里有 AI 生成的人时，写入亚马逊要求的隐藏标记
+tag_synthetic_people = true
+
+# ---------- 读图模型（要能看图）。都按 OpenAI 兼容接口调用 ----------
+[vision]
+default = "grok"
+
+[vision.models.grok]
+base_url = "http://127.0.0.1:8001/v1"   # 本地 Grok；用官方的话改成 https://api.x.ai/v1
+model = "grok-4"
+api_key_env = "GROK_API_KEY"
+
+[vision.models.deepseek]
+base_url = "https://api.deepseek.com/v1"
+model = "deepseek-chat"                  # 注意：要选能看图的型号
+api_key_env = "DEEPSEEK_API_KEY"
+
+# ---------- 出图模型 ----------
+[image]
+default = "nano-banana"
+
+[image.models.nano-banana]
+kind = "gemini"
+base_url = "https://generativelanguage.googleapis.com/v1beta"
+model = "gemini-2.5-flash-image"         # Nano Banana；Pro 版填对应型号
+api_key_env = "GEMINI_API_KEY"
+image_size = ""                          # Pro 版可填 "2K" / "4K"
+
+[image.models.gpt-image-local]
+kind = "openai_images"
+base_url = "http://127.0.0.1:8002/v1"    # 本地部署的 GPT Image 地址
+model = "gpt-image-2.5"
+api_key_env = "LOCAL_IMAGE_API_KEY"
