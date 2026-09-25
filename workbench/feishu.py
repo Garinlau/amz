@@ -113,6 +113,14 @@ class Feishu:
         return self.call("PUT", f"/open-apis/bitable/v1/apps/{app}/tables/{table_id}/records/{record_id}",
                          {"fields": fields})
 
+    def create_view(self, app: str, table_id: str, name: str, view_type: str = "grid") -> str:
+        d = self.call("POST", f"/open-apis/bitable/v1/apps/{app}/tables/{table_id}/views",
+                      {"view_name": name, "view_type": view_type})
+        return d["view"]["view_id"]
+
+    def update_view(self, app: str, table_id: str, view_id: str, prop: dict) -> None:
+        self.call("PATCH", f"/open-apis/bitable/v1/apps/{app}/tables/{table_id}/views/{view_id}", {"property": prop})
+
     # ---------- 附件 ----------
 
     def upload_attachment(self, app: str, name: str, content: bytes) -> str:
